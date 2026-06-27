@@ -1,5 +1,5 @@
 import os
-import google.generativeai as genai
+from google import genai
 
 from prompt_system import PROMPT_SISTEMA
 
@@ -15,20 +15,23 @@ def generar_respuesta_gemini(pregunta):
             "Configúrala en Render antes de usar Gemini."
         )
 
-    genai.configure(api_key=api_key)
+    try:
+        client = genai.Client(api_key=api_key)
 
-    modelo = genai.GenerativeModel("gemini-2.5-flash")
-
-    prompt = f"""
+        prompt = f"""
 {PROMPT_SISTEMA}
 
 Mensaje del usuario:
 {pregunta}
 """
 
-    try:
-        respuesta = modelo.generate_content(prompt)
+        respuesta = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
+
         return respuesta.text.replace("\n", "<br>")
+
     except Exception as e:
         return (
             "<b>ERROR:</b> No se pudo generar respuesta con Gemini.<br><br>"
