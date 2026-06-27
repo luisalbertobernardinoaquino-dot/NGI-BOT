@@ -27,28 +27,6 @@
             </div>
         </header>
 
-        <aside class="dove-assistant" aria-label="Bienvenida de NGI-BOT">
-            <div class="welcome-bubble" id="welcomeBubble">
-                <button
-                    class="close-welcome"
-                    id="closeWelcome"
-                    type="button"
-                    aria-label="Cerrar bienvenida"
-                >×</button>
-                <p>
-                    Bienvenido. Soy <strong>NGI-BOT</strong>. Cuéntame cómo te sientes y te compartiré una cita bíblica como guía espiritual.
-                </p>
-            </div>
-
-            <div class="dove-float" aria-hidden="true">
-                <img
-                    src="{{ url_for('static', filename='images/ES.png') }}"
-                    class="dove"
-                    alt=""
-                >
-            </div>
-        </aside>
-
         <main class="conversation" aria-label="Conversación con NGI-BOT">
             <section
                 class="messages"
@@ -98,6 +76,28 @@
                 </button>
             </form>
         </main>
+
+        <aside class="dove-assistant" aria-label="Bienvenida de NGI-BOT">
+            <div class="welcome-bubble" id="welcomeBubble">
+                <button
+                    class="close-welcome"
+                    id="closeWelcome"
+                    type="button"
+                    aria-label="Cerrar bienvenida"
+                >×</button>
+                <p>
+                    Bienvenido. Soy <strong>NGI-BOT</strong>. Cuéntame cómo te sientes y te compartiré una cita bíblica como guía espiritual.
+                </p>
+            </div>
+
+            <div class="dove-float" aria-hidden="true">
+                <img
+                    src="{{ url_for('static', filename='images/ES.png') }}"
+                    class="dove"
+                    alt=""
+                >
+            </div>
+        </aside>
     </div>
 </body>
 </html>
