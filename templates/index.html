@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>NGI-BOT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <div class="header-box">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo" alt="Logo de NGI">
+                <div class="church-name">NGI Iglesia Cristiana Nueva Generación Internacional</div>
+            </div>
+
+            <h1>NGI-BOT</h1>
+            <p class="subtitle">Este BOT te refiere citas bíblicas que son guía en tu proceso</p>
+        </div>
+
+        <div class="welcome-card" id="welcomeCard">
+            <button class="close-welcome" id="closeWelcome" type="button" aria-label="Cerrar bienvenida">×</button>
+            <div class="dove-area">
+                <div class="cross">✝</div>
+                <img src="{{ url_for('static', filename='images/ES.png') }}" class="dove" alt="Espíritu Santo">
+            </div>
+            <div class="welcome-text">
+                Bienvenido. Soy <b>NGI-BOT</b>. Cuéntame cómo te sientes y te compartiré una cita bíblica como guía espiritual.
+            </div>
+        </div>
+
+        <div class="chat-box">
+            <div class="messages" id="messages">
+                {% if pregunta %}
+                    <div class="bubble user">{{ pregunta }}</div>
+                    <div class="bubble bot">{{ respuesta|safe }}</div>
+                {% else %}
+                    <div class="bubble bot">
+                        Hola, soy <b>NGI-BOT</b>. Escribe tu estado de ánimo, por ejemplo: tristeza, miedo, ansiedad, soledad o gratitud.
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="typing" id="typing">NGI-BOT está escribiendo...</div>
+
+            <form method="POST" id="chatForm">
+                <input type="text" name="pregunta" placeholder="Escribe cómo te sientes..." required>
+                <button class="send" type="submit">Enviar</button>
+            </form>
+        </div>
+
+    </div>
+</body>
+</html>

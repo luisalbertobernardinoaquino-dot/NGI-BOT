@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Future local database files must not be committed.
+data/**/*.db
+data/**/*.sqlite
+data/**/*.sqlite3
+
+# Local search indexes will be generated rather than committed.
+data/indexes/*
+!data/indexes/.gitkeep
