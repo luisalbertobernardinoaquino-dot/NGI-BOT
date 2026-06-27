@@ -79,12 +79,51 @@ function createResponseSection(icon, label, text, extraClass = "") {
     return section;
 }
 
+function createVerseSection(reference, verse) {
+    const section = document.createElement("section");
+    section.className = "response-section";
+
+    const heading = document.createElement("p");
+    heading.className = "response-label";
+    heading.textContent = "📖 VERSÍCULO";
+
+    const content = document.createElement("p");
+    content.className = "response-text verse-text";
+    content.append(
+        document.createTextNode(reference),
+        document.createElement("br"),
+        document.createTextNode(verse)
+    );
+
+    section.append(heading, content);
+    return section;
+}
+
 function formatBotResponse() {
     if (!botResponse) {
         return;
     }
 
     const responseText = botResponse.innerText.trim();
+    const structuredMatch = responseText.match(
+        /REFERENCIA\s*:\s*([\s\S]*?)\s*VERS(?:Í|I)CULO\s*:\s*([\s\S]*?)\s*REFLEXI(?:Ó|O)N\s*:\s*([\s\S]*)$/i
+    );
+
+    if (structuredMatch) {
+        const reference = structuredMatch[1].trim();
+        const verse = structuredMatch[2].trim();
+        const reflection = structuredMatch[3].trim();
+
+        if (reference && verse && reflection) {
+            botResponse.replaceChildren(
+                createVerseSection(reference, verse),
+                createResponseSection("💡", "REFLEXIÓN", reflection)
+            );
+        }
+
+        return;
+    }
+
     const markerMatch = responseText.match(/Interpretaci(?:ó|o)n\s*:/i);
 
     if (!markerMatch || markerMatch.index === undefined) {
@@ -104,7 +143,7 @@ function formatBotResponse() {
     }
 
     botResponse.replaceChildren(
-        createResponseSection("📖", "VERSÍCULO", citation, "verse-text"),
+        createVerseSection(citation, ""),
         createResponseSection("💡", "REFLEXIÓN", reflection)
     );
 }
