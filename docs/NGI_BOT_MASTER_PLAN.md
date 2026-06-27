@@ -78,6 +78,22 @@ The visual system should prioritize:
 All interface features should work without requiring paid services or
 third-party frontend dependencies.
 
+### UI language standard
+
+NGI-BOT must never use the phrase **"NGI-BOT está orando"** or language that
+implies the system itself is praying or performing a spiritual act. Status and
+loading messages must describe the application's activity in neutral,
+transparent terms.
+
+Approved alternatives include:
+
+- **"NGI-BOT está preparando una respuesta..."**
+- **"Buscando una cita bíblica..."**
+- **"Preparando un mensaje de esperanza..."**
+
+All future interface copy, prototypes, design guidance, and documentation must
+follow this wording standard.
+
 ## 7. Functional Roadmap
 
 ### Phase 1: Professional interface and spiritual user experience

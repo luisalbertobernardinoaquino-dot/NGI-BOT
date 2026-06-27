@@ -2,56 +2,102 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>NGI-BOT</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5faff">
+    <title>NGI-BOT</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </head>
 
 <body>
-    <div class="container">
-
-        <div class="header">
-            <div class="header-box">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo" alt="Logo de NGI">
-                <div class="church-name">NGI Iglesia Cristiana Nueva Generación Internacional</div>
-            </div>
-
+    <div class="page-shell">
+        <header class="site-header">
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                class="logo"
+                alt="Logo de NGI"
+            >
+            <p class="church-name">NGI Iglesia Cristiana Nueva Generación Internacional</p>
             <h1>NGI-BOT</h1>
             <p class="subtitle">Este BOT te refiere citas bíblicas que son guía en tu proceso</p>
-        </div>
-
-        <div class="welcome-card" id="welcomeCard">
-            <button class="close-welcome" id="closeWelcome" type="button" aria-label="Cerrar bienvenida">×</button>
-            <div class="dove-area">
-                <div class="cross">✝</div>
-                <img src="{{ url_for('static', filename='images/ES.png') }}" class="dove" alt="Espíritu Santo">
+            <div class="spiritual-divider" aria-hidden="true">
+                <span></span>
+                <b>✝</b>
+                <span></span>
             </div>
-            <div class="welcome-text">
-                Bienvenido. Soy <b>NGI-BOT</b>. Cuéntame cómo te sientes y te compartiré una cita bíblica como guía espiritual.
-            </div>
-        </div>
+        </header>
 
-        <div class="chat-box">
-            <div class="messages" id="messages">
+        <aside class="dove-assistant" aria-label="Bienvenida de NGI-BOT">
+            <div class="welcome-bubble" id="welcomeBubble">
+                <button
+                    class="close-welcome"
+                    id="closeWelcome"
+                    type="button"
+                    aria-label="Cerrar bienvenida"
+                >×</button>
+                <p>
+                    Bienvenido. Soy <strong>NGI-BOT</strong>. Cuéntame cómo te sientes y te compartiré una cita bíblica como guía espiritual.
+                </p>
+            </div>
+
+            <div class="dove-float" aria-hidden="true">
+                <img
+                    src="{{ url_for('static', filename='images/ES.png') }}"
+                    class="dove"
+                    alt=""
+                >
+            </div>
+        </aside>
+
+        <main class="conversation" aria-label="Conversación con NGI-BOT">
+            <section
+                class="messages"
+                id="messages"
+                aria-live="polite"
+                aria-relevant="additions"
+            >
                 {% if pregunta %}
-                    <div class="bubble user">{{ pregunta }}</div>
-                    <div class="bubble bot">{{ respuesta|safe }}</div>
-                {% else %}
-                    <div class="bubble bot">
-                        Hola, soy <b>NGI-BOT</b>. Escribe tu estado de ánimo, por ejemplo: tristeza, miedo, ansiedad, soledad o gratitud.
+                    <div class="message message-user">
+                        <div class="user-bubble" data-user-message>{{ pregunta }}</div>
                     </div>
+                    <div class="message message-bot">
+                        <article class="bot-response" data-bot-response>{{ respuesta|safe }}</article>
+                    </div>
+                {% else %}
+                    <p class="initial-guidance">
+                        ESCRIBE TU SENTIR, POR EJEMPLO, HOY ME SIENTO ALEGRE POR NO CAER EN VICIO... ME SIENTO PREOCUPADO PORQUE NO TENGO TRABAJO...
+                    </p>
                 {% endif %}
+            </section>
+
+            <div
+                class="typing-indicator"
+                id="typing"
+                role="status"
+                aria-live="polite"
+                aria-label="Buscando una cita bíblica..."
+                hidden
+            >
+                <span aria-hidden="true">
+                    Buscando una cita bíblica<span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>
+                </span>
             </div>
 
-            <div class="typing" id="typing">NGI-BOT está escribiendo...</div>
-
-            <form method="POST" id="chatForm">
-                <input type="text" name="pregunta" placeholder="Escribe cómo te sientes..." required>
-                <button class="send" type="submit">Enviar</button>
+            <form method="POST" id="chatForm" class="composer">
+                <label class="sr-only" for="messageInput">Escribe tu sentir</label>
+                <input
+                    id="messageInput"
+                    type="text"
+                    name="pregunta"
+                    placeholder="ESCRIBE TU SENTIR, POR EJEMPLO, HOY ME SIENTO ALEGRE POR NO CAER EN VICIO... ME SIENTO PREOCUPADO PORQUE NO TENGO TRABAJO..."
+                    autocomplete="off"
+                    required
+                >
+                <button class="send-button" type="submit" aria-label="Enviar mensaje">
+                    <span aria-hidden="true">➤</span>
+                </button>
             </form>
-        </div>
-
+        </main>
     </div>
 </body>
 </html>
