@@ -20,12 +20,8 @@ Formato obligatorio de respuesta:
 Devuelve únicamente HTML con esta estructura exacta:
 
 <div class="response-section">
-<p class="response-label">📖 REFERENCIA</p>
-<p class="response-text">(cita bíblica)</p>
-</div>
-
-<div class="response-section">
 <p class="response-label">📜 VERSÍCULO</p>
+<p class="response-text">(cita bíblica)</p>
 <p class="response-text verse-text">(texto del versículo)</p>
 </div>
 
