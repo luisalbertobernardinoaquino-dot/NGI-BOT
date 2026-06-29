@@ -1,4 +1,5 @@
 import os
+import re
 from google import genai
 
 from prompt_system import PROMPT_SISTEMA
@@ -31,8 +32,23 @@ Mensaje del usuario:
         )
 
         texto = respuesta.text.strip()
+
+        # Elimina negritas de Markdown
         texto = texto.replace("**", "")
-        texto = texto.replace("\n\n\n", "\n\n")
+
+        # Normaliza saltos de línea
+        texto = texto.replace("\r\n", "\n")
+
+        # Elimina espacios sobrantes al inicio y final de cada línea
+        texto = "\n".join(line.strip() for line in texto.split("\n"))
+
+        # Elimina líneas completamente vacías
+        texto = "\n".join(line for line in texto.split("\n") if line != "")
+
+        # Deja únicamente un salto entre secciones
+        texto = re.sub(r"\n{2,}", "\n", texto)
+
+        # Convierte a HTML
         texto = texto.replace("\n", "<br>")
 
         return texto
