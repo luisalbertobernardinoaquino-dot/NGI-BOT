@@ -46,6 +46,13 @@ function normalizeText(value) {
         .replace(/[\u0300-\u036f]/g, "");
 }
 
+function cleanText(value) {
+    return value
+        .replace(/\s+/g, " ")
+        .replace(/\s+([.,;:!?])/g, "$1")
+        .trim();
+}
+
 function applyEmotionalAtmosphere(value) {
     const words = new Set(normalizeText(value).split(/[^a-zñ]+/).filter(Boolean));
     const matchingRule = moodRules.find((rule) =>
@@ -73,7 +80,7 @@ function createResponseSection(icon, label, text, extraClass = "") {
 
     const content = document.createElement("p");
     content.className = `response-text ${extraClass}`.trim();
-    content.textContent = text;
+    content.textContent = cleanText(text);
 
     section.append(heading, content);
     return section;
@@ -89,11 +96,9 @@ function createVerseSection(reference, verse) {
 
     const content = document.createElement("p");
     content.className = "response-text verse-text";
-    content.append(
-        document.createTextNode(reference),
-        document.createElement("br"),
-        document.createTextNode(verse)
-    );
+
+    const fullVerse = cleanText(`${reference} ${verse}`);
+    content.textContent = fullVerse;
 
     section.append(heading, content);
     return section;
@@ -105,20 +110,33 @@ function formatBotResponse() {
     }
 
     const responseText = botResponse.innerText.trim();
+
     const structuredMatch = responseText.match(
-        /REFERENCIA\s*:\s*([\s\S]*?)\s*VERS(?:Í|I)CULO\s*:\s*([\s\S]*?)\s*REFLEXI(?:Ó|O)N\s*:\s*([\s\S]*)$/i
+        /REFERENCIA\s*:\s*([\s\S]*?)\s*VERS(?:Í|I)CULO\s*:\s*([\s\S]*?)\s*REFLEXI(?:Ó|O)N\s*:\s*([\s\S]*?)(?:\s*APLICACI(?:Ó|O)N\s*PR(?:Á|A)CTICA\s*:\s*([\s\S]*))?$/i
     );
 
     if (structuredMatch) {
-        const reference = structuredMatch[1].trim();
-        const verse = structuredMatch[2].trim();
-        const reflection = structuredMatch[3].trim();
+        const reference = cleanText(structuredMatch[1] || "");
+        const verse = cleanText(structuredMatch[2] || "");
+        const reflection = cleanText(structuredMatch[3] || "");
+        const application = cleanText(structuredMatch[4] || "");
 
-        if (reference && verse && reflection) {
-            botResponse.replaceChildren(
-                createVerseSection(reference, verse),
-                createResponseSection("💡", "REFLEXIÓN", reflection)
-            );
+        const sections = [];
+
+        if (reference || verse) {
+            sections.push(createVerseSection(reference, verse));
+        }
+
+        if (reflection) {
+            sections.push(createResponseSection("💡", "REFLEXIÓN", reflection));
+        }
+
+        if (application) {
+            sections.push(createResponseSection("🤲", "APLICACIÓN PRÁCTICA", application));
+        }
+
+        if (sections.length > 0) {
+            botResponse.replaceChildren(...sections);
         }
 
         return;
@@ -127,18 +145,22 @@ function formatBotResponse() {
     const markerMatch = responseText.match(/Interpretaci(?:ó|o)n\s*:/i);
 
     if (!markerMatch || markerMatch.index === undefined) {
+        botResponse.textContent = cleanText(responseText);
         return;
     }
 
-    const citation = responseText
-        .slice(0, markerMatch.index)
-        .replace(/^📖\s*/, "")
-        .trim();
-    const reflection = responseText
-        .slice(markerMatch.index + markerMatch[0].length)
-        .trim();
+    const citation = cleanText(
+        responseText
+            .slice(0, markerMatch.index)
+            .replace(/^📖\s*/, "")
+    );
+
+    const reflection = cleanText(
+        responseText.slice(markerMatch.index + markerMatch[0].length)
+    );
 
     if (!citation || !reflection) {
+        botResponse.textContent = cleanText(responseText);
         return;
     }
 
