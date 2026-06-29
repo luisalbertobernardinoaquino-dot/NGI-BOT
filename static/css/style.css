@@ -653,3 +653,45 @@ h1 {
         transition-duration: 0.01ms !important;
     }
 }
+/* Corrección definitiva de espacios en respuestas NGI-BOT */
+
+.bot-response,
+.response-section,
+.response-text,
+.response-label {
+    white-space: normal !important;
+}
+
+.response-section {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.response-section + .response-section {
+    margin-top: 8px !important;
+    padding-top: 8px !important;
+}
+
+.response-label {
+    display: block !important;
+    margin: 0 0 2px 0 !important;
+    padding: 0 !important;
+    line-height: 1.1 !important;
+}
+
+.response-text {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.45 !important;
+}
+
+.response-text br {
+    display: none !important;
+}
+
+.bot-response p,
+.bot-response div {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
